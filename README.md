@@ -39,22 +39,22 @@ User Input
 Below is a step-by-step demonstration of the system workflow from user input to structured AI output.
 
 ### 1. Home Page
-<img src="assert/01-home.png" width="800">
+<img src="assert/home.png" width="800">
 
 ### 2. Prompt Input Interface
-<img src="assert/02-input.png" width="800">
+<img src="assert/input.png" width="800">
 
 ### 3. Model Processing
-<img src="assert/03-processing.png" width="800">
+<img src="assert/processing.png" width="800">
 
 ### 4. Refined Prompt Output
-<img src="assert/04-output.png" width="800">
+<img src="assert/output.png" width="800">
 
 ### 5. Score Visualization
-<img src="assert/05-scores.png" width="800">
+<img src="assert/scores.png" width="800">
 
 ### 6. Export Feature
-<img src="assert/06-download.png" width="800">
+<img src="assert/download.png" width="800">
 
 
 
