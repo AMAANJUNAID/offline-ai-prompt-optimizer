@@ -1,0 +1,6 @@
+venv/
+__pycache__/
+*.pyc
+history.txt
+exports/
+.env

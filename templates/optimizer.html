@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prompt Optimizer</title>
+    <meta charset="UTF-8">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: #f5f7fa;
+            color: #1f2937;
+        }
+
+        nav {
+            background: #0f172a;
+            color: white;
+            padding: 16px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a, nav button {
+            color: white;
+            margin-left: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+        }
+
+        .section {
+            background: white;
+            padding: 28px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+            margin-bottom: 28px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 160px;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        button.primary {
+            background: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        button.secondary {
+            background: #334155;
+            color: white;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        .score-row {
+            margin-bottom: 18px;
+        }
+
+        .score-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .fill {
+            height: 8px;
+            background: #2563eb;
+            width: 0%;
+            transition: width 1s ease-in-out;
+        }
+
+        .spinner {
+            display: none;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #2563eb;
+        }
+    </style>
+
+    <script>
+        function showSpinner() {
+            document.getElementById("spinner").style.display = "block";
+        }
+
+        function copyRefined() {
+            const text = document.getElementById("refinedText").innerText;
+
+            navigator.clipboard.writeText(text)
+                .then(() => alert("Copied successfully"))
+                .catch(() => {
+                    const temp = document.createElement("textarea");
+                    temp.value = text;
+                    document.body.appendChild(temp);
+                    temp.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(temp);
+                    alert("Copied");
+                });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            let clarity = parseInt("{{ result.clarity if result else 0 }}") * 10;
+            let structure = parseInt("{{ result.structure if result else 0 }}") * 10;
+            let completeness = parseInt("{{ result.completeness if result else 0 }}") * 10;
+            let confidence = parseInt("{{ result.confidence if result else 0 }}");
+
+            if (document.getElementById("clarityBar"))
+                document.getElementById("clarityBar").style.width = clarity + "%";
+
+            if (document.getElementById("structureBar"))
+                document.getElementById("structureBar").style.width = structure + "%";
+
+            if (document.getElementById("completenessBar"))
+                document.getElementById("completenessBar").style.width = completeness + "%";
+
+            if (document.getElementById("confidenceBar"))
+                document.getElementById("confidenceBar").style.width = confidence + "%";
+        });
+    </script>
+</head>
+
+<body>
+
+<nav>
+    <div><strong>Offline AI Prompt Optimizer</strong></div>
+    <div>
+        <a href="/">Home</a>
+        <a href="/history">History</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="section">
+        <form method="POST" onsubmit="showSpinner()">
+            <textarea name="prompt" placeholder="Enter your raw prompt..."></textarea>
+            <br>
+            <button type="submit" class="primary">Optimize</button>
+            <div id="spinner" class="spinner">Running local model...</div>
+        </form>
+    </div>
+
+    {% if result %}
+
+    <div class="section">
+        <h3>Original Prompt</h3>
+        <div>{{ request.form.prompt }}</div>
+    </div>
+
+    <div class="section">
+        <h3>Refined Prompt</h3>
+        <div id="refinedText">{{ result.refined }}</div>
+        <button class="secondary" onclick="copyRefined()">Copy Refined Prompt</button>
+    </div>
+
+    <div class="section">
+        <h3>Quality Scores</h3>
+
+        <div class="score-row">
+            <div class="score-label">
+                <span>Clarity</span>
+                <span>{{ result.clarity }}/10</span>
+            </div>
+            <div class="bar"><div id="clarityBar" class="fill"></div></div>
+        </div>
+
+        <div class="score-row">
+            <div class="score-label">
+                <span>Structure</span>
+                <span>{{ result.structure }}/10</span>
+            </div>
+            <div class="bar"><div id="structureBar" class="fill"></div></div>
+        </div>
+
+        <div class="score-row">
+            <div class="score-label">
+                <span>Completeness</span>
+                <span>{{ result.completeness }}/10</span>
+            </div>
+            <div class="bar"><div id="completenessBar" class="fill"></div></div>
+        </div>
+
+        <div class="score-row">
+            <div class="score-label">
+                <span>Confidence</span>
+                <span>{{ result.confidence }}%</span>
+            </div>
+            <div class="bar"><div id="confidenceBar" class="fill"></div></div>
+        </div>
+
+        {% if export_filename %}
+        <div style="margin-top:20px;">
+            <a href="{{ url_for('download_file', filename=export_filename) }}">
+                <button class="primary">Download Result</button>
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
