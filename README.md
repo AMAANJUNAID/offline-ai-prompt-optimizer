@@ -1,38 +1,65 @@
-Offline AI Prompt Optimizer
+# Offline AI Prompt Optimizer
 
-A fully offline AI prompt refinement and evaluation system built using Flask and Ollama (Local LLM integration).
+A fully offline AI prompt refinement and evaluation system built using **Flask** and **Ollama** (Local LLM integration)**.
 
 This application transforms unstructured user input into structured, professional AI-ready prompts while extracting quality metrics and visualizing them in real time.
 
-🚀 Features
+---
 
-Fully Offline (No external APIs)
+## 🚀 Features
 
-Local LLM integration via Ollama
+- Fully Offline (No external APIs)
+- Local LLM integration via Ollama
+- Structured prompt transformation
+- Defensive parsing of inconsistent model output
+- Markdown normalization layer
+- Score extraction system
+- Animated score visualization
+- Export refined prompt to file
+- Interaction logging
 
-Structured prompt transformation
+---
 
-Defensive parsing of inconsistent model output
+## 🏗 System Architecture
 
-Markdown normalization layer
+# Offline AI Prompt Optimizer
 
-Score extraction system
+A fully offline AI prompt refinement and evaluation system built using **Flask** and **Ollama (Local LLM integration)**.
 
-Animated score visualization
+This application transforms unstructured user input into structured, professional AI-ready prompts while extracting quality metrics and visualizing them in real time.
 
-Export refined prompt to file
+---
 
-Interaction logging
+## 🚀 Features
 
-🏗 System Architecture
+- Fully Offline (No external APIs)
+- Local LLM integration via Ollama
+- Structured prompt transformation
+- Defensive parsing of inconsistent model output
+- Markdown normalization layer
+- Score extraction system
+- Animated score visualization
+- Export refined prompt to file
+- Interaction logging
+
+---
+
+## 🏗 System Architecture
 
 User Input
-→ Structured Prompt Builder
-→ Ollama Local LLM (Gemma 2B)
-→ Output Normalization
-→ Section Extraction
-→ Score Parsing
-→ UI Rendering + Export
+      ↓
+Structured Prompt Builder
+      ↓
+Ollama Local LLM (Gemma 2B)
+      ↓
+Output Normalization
+      ↓
+Section Extraction
+      ↓
+Score Parsing
+      ↓
+UI Rendering + Export
+
 
 ## 📸 Application Walkthrough
 
@@ -58,118 +85,118 @@ Below is a step-by-step demonstration of the system workflow from user input to 
 
 
 
-🧠 Engineering Challenges Solved
-1. Handling Inconsistent LLM Formatting
+## 🧠 Engineering Challenges Solved
 
-Local models often return markdown-formatted headings (##, **) and inconsistent section labels.
-A normalization layer removes formatting artifacts before parsing.
+### 1. Handling Inconsistent LLM Formatting
 
-2. Defensive Section Extraction
+Local models often return markdown-formatted headings (##, **) and inconsistent section labels. A normalization layer removes formatting artifacts before parsing.
+
+### 2. Defensive Section Extraction
 
 Instead of relying on fragile regex, the parser:
 
-Normalizes markdown
+- Normalizes markdown
 
-Extracts sections using tolerant keyword matching
+- Extracts sections using tolerant keyword matching
 
-Clamps malformed score values
+- Clamps malformed score values
 
-Provides safe fallback when structure fails
+- Provides safe fallback when structure fails
 
-3. Score Extraction and Validation
+### 3. Score Extraction and Validation
 
-The system extracts:
+- The system extracts:
 
-Clarity
+- Clarity
 
-Structure
+- Structure
 
-Completeness
+- Completeness
 
-Confidence
+- Confidence
 
 It prevents malformed outputs such as:
 
-37/10
+- '37/10'
 
-Missing percentages
+- Missing percentages
 
-Non-numeric values
+- Non-numeric values
 
-4. Fully Offline Pipeline
+## 4. Fully Offline Pipeline
 
 The application uses subprocess integration:
 
-subprocess.run(["ollama", "run", MODEL_NAME], ...)
-
+```python
+subprocess.run(["ollama", "run", MODEL_NAME], ...))
+```
 
 No cloud APIs.
 No external dependencies.
 Runs entirely on local hardware.
 
-📊 Example Use Case
+---
+
+## 📊 Example Use Case
 
 Input:
-
+```
 build ai resume analyzer roadmap tools confused
-
-
+```
 Output:
 
-Structured refined prompt
+- Structured refined prompt
+- Intent summary
+- Technical breakdown
+- Score visualization
+- Exportable result
 
-Intent summary
+---
 
-Technical breakdown
+## 🛠 Tech Stack
 
-Score visualization
+- Python 3.11
+- Flask
+- Ollama
+- Gemma 2B (local model)
+- HTML / CSS
+- Regex-based parsing
 
-Exportable result
+---
 
-🛠 Tech Stack
+## 💻 How To Run
 
-Python 3.11
+1. Install Ollama
 
-Flask
-
-Ollama
-
-Gemma 2B (local model)
-
-HTML / CSS
-
-Regex-based parsing
-
-💻 How To Run
-
-Install Ollama
-
-Pull model:
-
+2. Pull model:
+```
 ollama pull gemma:2b
+```
 
-
-Create virtual environment:
-
+3. Create virtual environment:
+```
 python -m venv venv
 venv\Scripts\activate
+```
 
-
-Install dependencies:
-
+4. Install dependencies:
+```
 pip install -r requirements.txt
+```
 
-
-Run application:
-
+5. Run application:
+```
 python app.py
+```
 
-
-Open:
-
+6. Open:
+```
 http://127.0.0.1:5000
+```
+---
 
-📁 Project Structure
+## 📁 Project Structure
+```
 offlinepromptoptimizer/
 │
 ├── app.py
@@ -187,34 +214,27 @@ offlinepromptoptimizer/
 │
 └── exports/
 
-🔒 Why Offline?
+```
+
+## 🔒 Why Offline?
 
 This project demonstrates:
 
-Local LLM integration
+- Local LLM integration
+- Secure processing without external APIs
+- No cloud dependency
+- Complete system ownership
 
-Secure processing without external APIs
+---
 
-No cloud dependency
+## 📌 Future Improvements
 
-Complete system ownership
+- Deterministic rule-based scoring
 
-📌 Future Improvements
+- Multi-model switching
 
-Deterministic rule-based scoring
+- Structured JSON enforcement
 
-Multi-model switching
+- Production deployment with Gunicorn
 
-Structured JSON enforcement
 
-Production deployment with Gunicorn
-
-🔥 Important
-
-Do NOT oversell this as “intelligent AI evaluator”.
-
-Position it as:
-
-An offline LLM integration system with structured parsing and scoring visualization.
-
-That sounds serious.
