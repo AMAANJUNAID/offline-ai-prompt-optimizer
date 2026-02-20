@@ -1,6 +1,6 @@
 # Offline AI Prompt Optimizer
 
-A fully offline AI prompt refinement and evaluation system built using **Flask** and **Ollama** (Local LLM integration)**.
+A fully offline AI prompt refinement and evaluation system built using **Flask** and **Ollama** (Local LLM integration).
 
 This application transforms unstructured user input into structured, professional AI-ready prompts while extracting quality metrics and visualizing them in real time.
 
@@ -20,7 +20,6 @@ This application transforms unstructured user input into structured, professiona
 
 ---
 
-## 🏗 System Architecture
 
 # Offline AI Prompt Optimizer
 
